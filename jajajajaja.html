@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Full-Screen QR Code Scanner</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        #scanner-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        #scanner-video {
+            width: 100vw;
+            height: 100vh;
+            margin: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div id="scanner-container">
+        <video id="scanner-video"></video>
+    </div>
+
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            let scanner = new Instascan.Scanner({ video: document.getElementById('scanner-video'), mirror:false });
+            scanner.addListener('scan', function(content) {
+                alert(content); // Replace with your custom logic
+            });
+            Instascan.Camera.getCameras().then(function(cameras) {
+                if (cameras.length > 0) {
+                    scanner.start(cameras[2]);
+                } else {
+                    console.error('No cameras found.');
+                }
+            }).catch(function(e) {
+                console.error(e);
+            });
+        });
+    </script>
+</body>
+</html>
